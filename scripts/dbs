@@ -5,5 +5,5 @@ set -e
 
 DBS_PATH=/usr/bin/dbs
 
-curl -o"$DBS_PATH" -Lf https://raw.githubusercontent.com/radmen/docker-build-scripts/master/bin/dbs
+curl -o"$DBS_PATH" -Lfs https://raw.githubusercontent.com/radmen/docker-build-scripts/master/bin/dbs
 chmod +x "$DBS_PATH"
