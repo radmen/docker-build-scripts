@@ -47,13 +47,10 @@ download ()
     FROM="$1"
     TO="$2"
 
-    echo "Fetching script from: $FROM"
-
     if curl -o"$TO" -Lfs "$FROM";
     then
         return 0
     else
-        echo "Failed"
         return 1
     fi;
 }
@@ -68,6 +65,21 @@ runScript ()
     rm "$FILE_PATH"
 }
 
+downloadAndRun ()
+{
+    CHECK_URL="$1"
+    DEST="$2"
+
+    if download "$CHECK_URL" "$DEST";
+    then
+        log "Using: $CHECK_URL"
+        runScript "$DEST"
+        return 0
+    else
+        return 1
+    fi;
+}
+
 URL="https://raw.githubusercontent.com/radmen/docker-build-scripts/master/scripts"
 INSTALL_SCRIPT=$1
 DEST="/tmp/$(randName)_${INSTALL_SCRIPT}"
@@ -75,15 +87,13 @@ IMAGE=$(dbsImage "$DOCKER_IMAGE")
 
 log "Searching script: $INSTALL_SCRIPT"
 
-if download "${URL}/$(echo "$IMAGE" | tr ':' '/')/${INSTALL_SCRIPT}" "$DEST";
+if downloadAndRun "${URL}/$(echo "$IMAGE" | tr ':' '/')/${INSTALL_SCRIPT}" "$DEST";
 then
-    runScript "$DEST"
     exit 0
 fi;
 
-if download "${URL}/$(echo "$IMAGE" | cut -d':' -f0)/${INSTALL_SCRIPT}" "$DEST";
+if downloadAndRun "${URL}/$(echo "$IMAGE" | cut -d':' -f0)/${INSTALL_SCRIPT}" "$DEST";
 then
-    runScript "$DEST"
     exit 0
 fi;
 
