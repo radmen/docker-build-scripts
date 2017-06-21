@@ -5,6 +5,16 @@
 #
 # vim: set ft=sh
 
+set -e
+
+if [ ! -z "$(which yarn)" ];
+then
+    echo "yarn is installed. Skipping.."
+    exit 0
+fi
+
+echo "Installing yarn"
+
 mkdir -p /opt/yarn/bin
 
 curl -o/opt/latest.tar.gz -Lfs https://yarnpkg.com/latest.tar.gz
