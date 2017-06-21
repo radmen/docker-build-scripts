@@ -36,10 +36,13 @@ download ()
     FROM="$1"
     TO="$2"
 
-    if curl -o"$TO" -Lf --stderr /dev/null "$FROM" 2> /dev/null;
+    echo "Fetching script from: $FROM"
+
+    if curl -o"$TO" -Lfs "$FROM";
     then
         return 0
     else
+        echo "Failed"
         return 1
     fi;
 }

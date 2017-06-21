@@ -7,7 +7,7 @@
 
 mkdir -p /opt/yarn/bin
 
-curl -o/opt/latest.tar.gz -L https://yarnpkg.com/latest.tar.gz
+curl -o/opt/latest.tar.gz -Lfs https://yarnpkg.com/latest.tar.gz
 
 tar zxf /opt/latest.tar.gz -C /opt/yarn
 mv /opt/yarn/dist/bin/yarn /opt/yarn/bin
