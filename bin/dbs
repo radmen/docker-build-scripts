@@ -8,6 +8,12 @@ log ()
     echo "[DBS] $1"
 }
 
+if [ -z "$(which curl)" ];
+then
+    log "Missing curl"
+    exit 1
+fi;
+
 if [ -z "$DBS_IMAGE" ];
 then
     log "Required variable \$DBS_IMAGE is not defined"
