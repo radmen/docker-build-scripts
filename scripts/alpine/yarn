@@ -1,0 +1,18 @@
+#!/bin/sh
+#
+# Installs yarn binary
+# This script will not install Node.js
+#
+# vim: set ft=sh
+
+mkdir -p /opt/yarn/bin
+
+curl -o/opt/latest.tar.gz -L https://yarnpkg.com/latest.tar.gz
+
+tar zxf /opt/latest.tar.gz -C /opt/yarn
+mv /opt/yarn/dist/bin/yarn /opt/yarn/bin
+
+rm -rf /opt/yarn/dist /opt/latest.tar.gz
+ln -s /opt/yarn/bin/yarn /usr/bin/yarn
+
+yarn -v

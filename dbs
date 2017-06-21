@@ -1,0 +1,73 @@
+#!/bin/sh
+# vim: set ft=shell
+
+if [ -z "$DBS_IMAGE" ];
+then
+    echo "Required variable \$DBS_IMAGE is not defined"
+    exit 1
+fi;
+
+if [ -z "$1" ];
+then
+    echo "Missing script name"
+    exit 1
+fi;
+
+randName ()
+{
+    date | md5sum | head -c8
+}
+
+dbsImage ()
+{
+    # @see https://stackoverflow.com/a/8811800/1053763
+    if [ "${1#*:}" != "$1" ];
+    then
+        echo "$1"
+    else
+        echo "$1:latest"
+    fi;
+}
+
+download ()
+{
+    FROM="$1"
+    TO="$2"
+
+    if curl -o"$TO" -Lf --stderr /dev/null "$FROM" 2> /dev/null;
+    then
+        return 0
+    else
+        return 1
+    fi;
+}
+
+runScript ()
+{
+    PATH="$1"
+
+    chmod +x "$PATH"
+    $PATH
+
+    rm "$PATH"
+}
+
+URL="https://raw.githubusercontent.com/radmen/docker-build-scripts/master/scripts"
+INSTALL_SCRIPT=$1
+DEST="/tmp/$(randName)_${INSTALL_SCRIPT}"
+IMAGE=$(dbsImage "$DBS_IMAGE")
+
+if download "${URL}/$(echo "$IMAGE" | tr ':' '/')/${INSTALL_SCRIPT}" "$DEST";
+then
+    runScript "$DEST"
+    exit 0
+fi;
+
+if download "${URL}/$(echo "$IMAGE" | cut -d':' -f0)/${INSTALL_SCRIPT}" "$DEST";
+then
+    runScript "$DEST"
+    exit 0
+fi;
+
+echo "Could not find script"
+exit 1
