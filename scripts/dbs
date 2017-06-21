@@ -1,7 +1,9 @@
-#!/bin/sh
+#!/usr/bin/env sh
 # vim: set ft=shell
 
-PATH=/usr/bin/dbs
+set -e
 
-curl -o"$PATH" -Lf https://raw.githubusercontent.com/radmen/docker-build-scripts/master/scripts
-chmod +x "$PATH"
+DBS_PATH=/usr/bin/dbs
+
+curl -o"$DBS_PATH" -Lf https://raw.githubusercontent.com/radmen/docker-build-scripts/master/bin/dbs
+chmod +x "$DBS_PATH"

@@ -1,6 +1,8 @@
 #!/bin/sh
 # vim: set ft=shell
 
+set -e
+
 if [ -z "$DBS_IMAGE" ];
 then
     echo "Required variable \$DBS_IMAGE is not defined"
@@ -44,12 +46,12 @@ download ()
 
 runScript ()
 {
-    PATH="$1"
+    FILE_PATH="$1"
 
-    chmod +x "$PATH"
-    $PATH
+    chmod +x "$FILE_PATH"
+    $FILE_PATH
 
-    rm "$PATH"
+    rm "$FILE_PATH"
 }
 
 URL="https://raw.githubusercontent.com/radmen/docker-build-scripts/master/scripts"
