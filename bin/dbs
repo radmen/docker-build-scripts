@@ -1,17 +1,22 @@
 #!/bin/sh
 # vim: set ft=shell
 
-set -e
+set -eo pipefail
+
+log ()
+{
+    echo "[DBS] $1"
+}
 
 if [ -z "$DBS_IMAGE" ];
 then
-    echo "Required variable \$DBS_IMAGE is not defined"
+    log "Required variable \$DBS_IMAGE is not defined"
     exit 1
 fi;
 
 if [ -z "$1" ];
 then
-    echo "Missing script name"
+    log "Missing script name"
     exit 1
 fi;
 
@@ -62,6 +67,8 @@ INSTALL_SCRIPT=$1
 DEST="/tmp/$(randName)_${INSTALL_SCRIPT}"
 IMAGE=$(dbsImage "$DBS_IMAGE")
 
+log "Searching script: $INSTALL_SCRIPT"
+
 if download "${URL}/$(echo "$IMAGE" | tr ':' '/')/${INSTALL_SCRIPT}" "$DEST";
 then
     runScript "$DEST"
@@ -74,5 +81,5 @@ then
     exit 0
 fi;
 
-echo "Could not find script"
+log "Could not find script"
 exit 1
