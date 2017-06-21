@@ -14,9 +14,9 @@ then
     exit 1
 fi;
 
-if [ -z "$DBS_IMAGE" ];
+if [ -z "${DOCKER_IMAGE}" ];
 then
-    log "Required variable \$DBS_IMAGE is not defined"
+    log "Required variable \$DOCKER_IMAGE is not defined"
     exit 1
 fi;
 
@@ -71,7 +71,7 @@ runScript ()
 URL="https://raw.githubusercontent.com/radmen/docker-build-scripts/master/scripts"
 INSTALL_SCRIPT=$1
 DEST="/tmp/$(randName)_${INSTALL_SCRIPT}"
-IMAGE=$(dbsImage "$DBS_IMAGE")
+IMAGE=$(dbsImage "$DOCKER_IMAGE")
 
 log "Searching script: $INSTALL_SCRIPT"
 
