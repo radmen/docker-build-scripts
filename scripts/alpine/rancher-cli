@@ -19,13 +19,13 @@ get_version ()
 
 download_binary ()
 {
-    cd /tmp
-
     VERSION="$1"
 
-    curl -Lso rancher.tar.gz "https://github.com/rancher/cli/releases/download/$VERSION/rancher-linux-amd64-$VERSION.tar.gz"
+    cd /tmp
 
+    curl -Lso rancher.tar.gz "https://github.com/rancher/cli/releases/download/$VERSION/rancher-linux-amd64-$VERSION.tar.gz"
     tar xf rancher.tar.gz
+    rm rancher.tar.gz
 
     echo "/tmp/rancher-$VERSION/rancher"
 }
