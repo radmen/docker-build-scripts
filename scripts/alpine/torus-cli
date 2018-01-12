@@ -6,15 +6,7 @@ echo "Installing torus-cli"
 
 get_version ()
 {
-    git clone -n https://github.com/manifoldco/torus-cli.git
-    
-    cd torus-cli
-    TAG="$(git describe --tags --abbrev=0 | tr -d 'v')"
-
-    cd ..
-    rm -rf torus-cli
-
-    echo "$TAG"
+    curl -s https://get.torus.sh/manifest.json | jq -r '.version'
 }
 
 download_binary ()
@@ -30,13 +22,13 @@ download_binary ()
     echo "/tmp/torus"
 }
 
-apk add --no-cache -t .deps git unzip
+apk add --no-cache -t .deps curl jq unzip
 
 TAG="$(get_version)"
 BINARY="$(download_binary "$TAG")"
 
 mv "$BINARY" /usr/bin
+apk del .deps
 
 torus -v
 
-apk del .deps
